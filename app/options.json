@@ -1,0 +1,57 @@
+[
+	{
+		"label": "forma",
+		"controls": [
+			{
+				"type": "select", 
+				"name": "shape",
+				"options": ["line", "circle", "square"],
+				"value": 0
+			},
+			{
+				"type": "slider",
+				"name": "size",
+				"label": "tamaño",
+				"value": 89,
+				"min": 1,
+				"max": 300
+			}
+
+		]
+	},
+	{
+		"label": "animación",
+		"controls": [
+			{
+				"type": "select", 
+				"label": "ciclo",
+				"name": "repeat",
+				"options": ["repeat-repeat", "repeat-continue", "repeat-reverse"],
+				"value": 1
+			},
+			{
+				"type": "select", 
+				"label": "sincronización",
+				"name": "synchro",
+				"options": ["synchro-synced", "synchro-offbeat"],
+				"value": 1
+			},
+			{
+				"type": "select", 
+				"label": "coordenadas",
+				"name": "coordType",
+				"options": ["coordenadas-rect", "coordenadas-polar"],
+				"value": 0
+			},
+			{
+				"type": "color", 
+				"name": "color",
+				"value": {
+					"rgbString": "rgb(255, 255, 255)"
+				}
+			}
+
+		]
+	}
+
+]
