@@ -22,7 +22,7 @@ class App extends Component {
   }
 
   componentDidMount(){
-    this.anim = new AnimationCanvas("draw", this.settings);
+    this.anim = new AnimationCanvas("draw", this.settings, this);
   }
   
   update(newValue, groupIndex, controlIndex){

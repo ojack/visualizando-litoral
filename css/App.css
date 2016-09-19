@@ -22,7 +22,13 @@ h4{
   height: 40px;
 }
 
- 
+ #draw{
+  border: 2px solid #fff;
+ }
+
+ #draw.recording{
+  border: 2px solid #f00;
+ }
 
 .controls{
   position: fixed;

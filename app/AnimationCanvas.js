@@ -1,11 +1,15 @@
 import Agent from './Agent.js';
+import Settings from './settings.json';
 
 class AnimationCanvas {
-  constructor(canvId, settings) {
+  constructor(canvId, settings, parent) {
+    this.parent = parent;
     this.settings = settings;
     this.canvas = document.getElementById(canvId);
-    this.canvas.width = window.innerWidth;
-    this.canvas.height = window.innerHeight;
+   // this.canvas.width = window.innerWidth;
+   this.canvas.width = Settings.size.w;
+   this.canvas.height = Settings.size.h;
+   // this.canvas.height = window.innerHeight;
     this.ctx = this.canvas.getContext('2d');
     this.isDrawing = false;
     this.ctx.fillStyle = "#fff";
@@ -42,10 +46,10 @@ class AnimationCanvas {
       this.currAgent.isRecording = false;
     }.bind(this);
 
-    window.onresize = function(){
-      this.canvas.width = window.innerWidth;
-      this.canvas.height = window.innerHeight;
-    }.bind(this);
+    // window.onresize = function(){
+    //   this.canvas.width = window.innerWidth;
+    //   this.canvas.height = window.innerHeight;
+    // }.bind(this);
 
     window.onkeypress = function(e){
       var keyCode = e.keyCode || e.which;
@@ -86,6 +90,7 @@ class AnimationCanvas {
   //  this.mediaRecorder.onstop = this.handleStop;
     this.mediaRecorder.ondataavailable = this.handleDataAvailable.bind(this);
     this.mediaRecorder.start(10);
+    this.canvas.className = "recording";
   }
 
   handleDataAvailable(event) {
@@ -100,6 +105,7 @@ class AnimationCanvas {
     this.isRecording = false;
     //console.log('Recorded Blobs: ', this.recordedBlobs);
     this.download();
+    this.canvas.className = "";
   }
 
   download() {
@@ -108,13 +114,17 @@ class AnimationCanvas {
     var a = document.createElement('a');
     a.style.display = 'none';
     a.href = url;
-    a.download = '.webm';
+    var date = new Date();
+
+    a.download = "litoral-"+date.getDate()+"-"+date.getDate()+"-"+date.getHours()+"-"+date.getMinutes()+'.webm';
     document.body.appendChild(a);
     a.click();
     setTimeout(function() {
       document.body.removeChild(a);
       window.URL.revokeObjectURL(url);
     }, 100);
+    this.recordedBlobs = [];
+    this.mediaRecorder = null;
   }
 
   addAgent(pos){
