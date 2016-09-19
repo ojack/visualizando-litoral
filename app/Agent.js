@@ -71,7 +71,27 @@ class Agent {
     if(this.points.length > 0){
       this.ctx.fillStyle = this.color;
       var currPt = this.points[this.stepIndex];
-      this.ctx.fillRect(currPt.x-this.size/2,currPt.y-this.size/2,this.size, this.size);
+      this.ctx.save();
+     
+      switch(this.shape) {
+        case 0:
+            this.ctx.translate(currPt.x, currPt.y);
+            this.ctx.fillRect(-this.size/2, -this.size/2,this.size, this.size);
+            
+            break;
+        case 1:
+            this.ctx.translate(currPt.x, currPt.y);
+            this.ctx.beginPath();
+            this.ctx.arc(0, 0,this.size/2,50,0,2*Math.PI);
+            this.ctx.fill();
+            break;
+        case 2:
+            this.ctx.translate(currPt.x, currPt.y);
+            this.ctx.fillRect(-this.size/2, -this.size/2,this.size, this.size);
+            break;
+      } 
+      
+      this.ctx.restore();
     }
   }
 }
