@@ -43,7 +43,7 @@ class Agent {
     this.stepIndex = 0;
     switch(this.repeat) {
       case 1:
-          console.log(" point offset", this.points[this.points.length-1]);
+         // console.log(" point offset", this.points[this.points.length-1]);
           this.setOffset(this.points[this.points.length-1]);
           break;
       case 2:

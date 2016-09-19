@@ -14,8 +14,10 @@ class AnimationCanvas {
     this.addEventListeners();
     this.mousePos = {x: 0, y: 0};
     this.render();
-    var stream = this.canvas.captureStream(60); 
+    this.isRecording = false;
+
     this.ctx.translate(this.canvas.width/2, this.canvas.height/2);
+    //var stream = this.canvas.captureStream(60); 
     // var mediaRecorder = new MediaRecorder(stream);
     // mediaRecorder.start();
   }
@@ -61,10 +63,58 @@ class AnimationCanvas {
         case 100: // d, remove last
           if(this.agents.length > 0) this.agents.splice(this.agents.length-1, 1);
           break;
+        case 114:
+          if(this.isRecording ){
+            
+            this.stopRecording();
+          } else {
+            
+            this.startRecording();
+          }
         default:
           break;
      }
     }.bind(this);
+  }
+
+  startRecording(){
+    console.log("starting to record");
+    this.isRecording = true;
+    this.recordedBlobs = [];
+    var stream = this.canvas.captureStream(60); 
+    this.mediaRecorder = new MediaRecorder(stream);
+  //  this.mediaRecorder.onstop = this.handleStop;
+    this.mediaRecorder.ondataavailable = this.handleDataAvailable.bind(this);
+    this.mediaRecorder.start(10);
+  }
+
+  handleDataAvailable(event) {
+    if (event.data && event.data.size > 0) {
+      this.recordedBlobs.push(event.data);
+    }
+  }
+
+  stopRecording(){
+    console.log("stopping record");
+    this.mediaRecorder.stop();
+    this.isRecording = false;
+    //console.log('Recorded Blobs: ', this.recordedBlobs);
+    this.download();
+  }
+
+  download() {
+    var blob = new Blob(this.recordedBlobs, {type: 'video/webm'});
+    var url = window.URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.style.display = 'none';
+    a.href = url;
+    a.download = '.webm';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function() {
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    }, 100);
   }
 
   addAgent(pos){
