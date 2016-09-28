@@ -75,6 +75,10 @@ class AnimationCanvas {
             
             this.startRecording();
           }
+          break;
+        case 104: // h = hide controls
+          this.parent.toggleControls();
+          break;
         default:
           break;
      }

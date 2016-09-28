@@ -25,6 +25,11 @@ class App extends Component {
     this.anim = new AnimationCanvas("draw", this.settings, this);
   }
   
+  toggleControls(){
+    console.log("togglinh controls");
+    this.setState({showControls: this.state.showControls ? false: true});
+  }
+
   update(newValue, groupIndex, controlIndex){
     var newOptions = this.state.options;
     newOptions[groupIndex].controls[controlIndex].value = newValue;
