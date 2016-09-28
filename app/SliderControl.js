@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 class SliderControl extends Component {
   update(e){
   	//console.log(e.target.value);
-  	this.props.update(e.target.value, this.props.groupIndex, this.props.controlIndex);
+  	this.props.update(e.target.value, this.props.groupIndex, this.props.controlIndex, "value");
   }
   render() {
   	 

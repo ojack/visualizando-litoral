@@ -9,7 +9,7 @@ class App extends Component {
   constructor(props){
     super(props);
     
-    this.state = {options: options, showControls: true};
+    this.state = {options: options, showControls: true, keysDown: []};
 
     var settings = {};
     for(var i = 0; i < this.state.options.length; i++){
@@ -30,11 +30,17 @@ class App extends Component {
     this.setState({showControls: this.state.showControls ? false: true});
   }
 
-  update(newValue, groupIndex, controlIndex){
+  setKeysDown(keys){
+    this.setState({keysDown: keys});
+  }
+
+  update(newValue, groupIndex, controlIndex, propertyName){
     var newOptions = this.state.options;
-    newOptions[groupIndex].controls[controlIndex].value = newValue;
+    newOptions[groupIndex].controls[controlIndex][propertyName] = newValue;
     this.setState({options: newOptions});
   }
+
+  
 
   render() {
     var style = {
@@ -46,7 +52,7 @@ class App extends Component {
     };
     var controls = [];
     if(this.state.showControls){
-      controls = <Controls update={this.update.bind(this)} options={this.state.options}/>
+      controls = <Controls update={this.update.bind(this)} keysDown={this.state.keysDown} options={this.state.options}/>
     }
     return <div style={style}>
       <canvas id="draw"></canvas>

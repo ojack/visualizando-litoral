@@ -55,29 +55,39 @@ class Agent {
   }
 
   update(){
+
     if(this.isRecording){
       this.stepIndex = this.points.length - 1;
     } else {
-      this.stepIndex++;
-      if(this.stepIndex >= this.points.length){
-        this.restartAnimation();
+      if(this.shape==0){ // if line, different update
+        this.points = Path.addNextPoint(this.points);
+      } else {
+        this.stepIndex++;
+        if(this.stepIndex >= this.points.length){
+          this.restartAnimation();
+        }
       }
     }
-   
-   
+  
+    
   }
 
   draw(){
     if(this.points.length > 0){
       this.ctx.fillStyle = this.color;
+       this.ctx.strokeStyle = this.color;
+        this.ctx.lineWidth = this.size/5;
       var currPt = this.points[this.stepIndex];
       this.ctx.save();
      
       switch(this.shape) {
         case 0:
-            this.ctx.translate(currPt.x, currPt.y);
-            this.ctx.fillRect(-this.size/2, -this.size/2,this.size, this.size);
-            
+            this.ctx.beginPath();
+            this.ctx.moveTo(this.points[0].x, this.points[0].y);
+            for(var i = 1; i < this.points.length; i++){
+              this.ctx.lineTo(this.points[i].x, this.points[i].y);
+            }
+            this.ctx.stroke();
             break;
         case 1:
             this.ctx.translate(currPt.x, currPt.y);

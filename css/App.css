@@ -20,14 +20,37 @@ h4{
 .control-button{
   width: 40px;
   height: 40px;
+  display: inline-block;
+  background-color: #3f3f3f;
+  color: #fff;
+  text-align: center;
+vertical-align: middle;
+line-height: 40px; 
+cursor: pointer;
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+}
+
+ .control-button.selected{
+  color: #3f3f3f;
+  background-color: #fff;
+}
+
+.control-button.recording{
+  /*color: #f00;*/
+   border-bottom: 4px solid #f00;
 }
 
  #draw{
-  border: 2px solid #fff;
+  border: 4px solid #fff;
  }
 
  #draw.recording{
-  border: 2px solid #f00;
+  border: 4px solid #f00;
  }
 
 .controls{
@@ -42,13 +65,16 @@ h4{
 }
 
 .control-element{
+  margin-right: 15px;
+  margin-bottom: 15px;
   margin-top: 10px;
-  margin-bottom: 10px;
+  display: inline-block;
 }
 .control-group{
   
-  padding: 15px;
+  padding: 10px;
   border: solid 1px #666;
+
 }
 #root{
   position: fixed;

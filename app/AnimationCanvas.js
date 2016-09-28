@@ -14,12 +14,17 @@ class AnimationCanvas {
     this.isDrawing = false;
     this.ctx.fillStyle = "#fff";
     this.agents = [];
+    console.log(this.settings);
+    for(var i = 0; i < this.settings.track.value.length; i++){
+      var agentsPerTrack = [];
+      this.agents.push(agentsPerTrack);
+    }
     this.currAgent = new Agent(this.ctx, this.settings);
     this.addEventListeners();
     this.mousePos = {x: 0, y: 0};
     this.render();
     this.isRecording = false;
-
+    this.keysDown = [];
     this.ctx.translate(this.canvas.width/2, this.canvas.height/2);
     //var stream = this.canvas.captureStream(60); 
     // var mediaRecorder = new MediaRecorder(stream);
@@ -31,7 +36,7 @@ class AnimationCanvas {
       this.currAgent = new Agent(this.ctx, this.settings);
       this.currAgent.isRecording = true;
       this.currAgent.addPoint(e.clientX-this.canvas.width/2, e.clientY-this.canvas.height/2);
-      this.agents.push(this.currAgent);
+      this.agents[this.settings.track.recording].push(this.currAgent);
       this.isDrawing = true;
     }.bind(this);
 
@@ -51,21 +56,21 @@ class AnimationCanvas {
     //   this.canvas.height = window.innerHeight;
     // }.bind(this);
 
-    window.onkeypress = function(e){
+    window.onkeydown = function(e){
       var keyCode = e.keyCode || e.which;
-      console.log(keyCode);
+      console.log(e);
       switch(keyCode) {
-        case 97: // add
+        case 65: // add, key a
           this.addAgent(this.mousePos);
           break;
-        case 99: // clear
-          this.agents = [];
+        case 67: // clear
+          this.agents[this.settings.track.recording] = [];
           break;
         case 102: // f, remove first
-          if(this.agents.length > 0) this.agents.splice(0, 1);
+          if(this.agents[this.settings.track.recording].length > 0) this.agents[this.settings.track.recording].splice(0, 1);
           break;
         case 100: // d, remove last
-          if(this.agents.length > 0) this.agents.splice(this.agents.length-1, 1);
+          if(this.agents[this.settings.track.recording].length > 0) this.agents[this.settings.track.recording].splice(this.agents[this.settings.track.recording].length-1, 1);
           break;
         case 114:
           if(this.isRecording ){
@@ -82,7 +87,20 @@ class AnimationCanvas {
         default:
           break;
      }
+     if(this.keysDown.indexOf(keyCode) < 0){
+        this.keysDown.push(keyCode);
+        this.parent.setKeysDown(this.keysDown);
+     }
+
     }.bind(this);
+    window.onkeyup = function(e){
+      console.log(this.keysDown);
+      var keyCode = e.keyCode || e.which;
+      if(this.keysDown.indexOf(keyCode) > -1){
+        this.keysDown.splice(this.keysDown.indexOf(keyCode), 1);
+        this.parent.setKeysDown(this.keysDown);
+      }
+   }.bind(this);
   }
 
   startRecording(){
@@ -139,7 +157,7 @@ class AnimationCanvas {
       agent.setPath(this.currAgent.points, 0);
     }
     agent.setOffset(pos);
-    this.agents.push(agent);
+    this.agents[this.settings.track.recording].push(agent);
   }
 
   render(){
@@ -149,8 +167,12 @@ class AnimationCanvas {
       }
     this.ctx.clearRect(-this.canvas.width/2, -this.canvas.height/2, this.canvas.width, this.canvas.height);
     for(var i = 0; i < this.agents.length; i++){
-      this.agents[i].update();
-      this.agents[i].draw();
+      if(this.settings.track.value[i]==true){
+        for(var j = 0; j < this.agents[i].length; j++){
+          this.agents[i][j].update();
+          this.agents[i][j].draw();
+        }
+      }
     }
     window.requestAnimationFrame(this.render.bind(this));
   }

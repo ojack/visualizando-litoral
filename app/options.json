@@ -52,6 +52,20 @@
 			}
 
 		]
+	},
+	{
+		"label": "track",
+		"controls": [
+			{
+				"type": "multi-select",
+				"name": "track",
+				"label": "(click = visibilidad, shift + click = grabar)",
+				"options": [1, 2, 3, 4],
+				"value": [true, false, false, false],
+				"recording": 0
+				
+			}
+		]
 	}
 
 ]

@@ -28,6 +28,19 @@ class Path {
     
   }
 
+  /* create continuous line */
+  static addNextPoint(points){
+    if(points.length >= 2){
+      var off = {x: points[1].x-points[0].x, y: points[1].y-points[0].y};
+      var newPt = this.addPolarCoords({x: points[points.length-1].x + off.x, y: points[points.length-1].y + off.y});
+      points.splice(0, 1);
+      points.push(newPt);
+      return points;
+    } else {
+      return points;
+    }
+  }
+
   static calculatePolarOffset(points, o, index){
     //console.log("calc offset", o);
     var p = this.toPolar(o);

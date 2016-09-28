@@ -26,7 +26,7 @@ class ColorPalette extends Component {
   showColor(color) {
       console.log(color);
       console.log(this);
-      this.props.update(color, this.props.groupIndex, this.props.controlIndex);
+      this.props.update(color, this.props.groupIndex, this.props.controlIndex, "value");
      // this.setState({color: color});
   }
 }

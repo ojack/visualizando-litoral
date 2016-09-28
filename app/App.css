@@ -20,9 +20,14 @@ h4{
 .control-button{
   width: 40px;
   height: 40px;
+  display: inline;
+  background-color: #3f3f3f;
 }
 
+ .control-button.selected{
  
+  background-color: #fff;
+}
 
 .controls{
   position: fixed;

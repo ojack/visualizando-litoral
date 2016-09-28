@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 class SelectControl extends Component {
   update(ind, t){
-  	t.props.update(ind, t.props.groupIndex, t.props.controlIndex);
+  	t.props.update(ind, t.props.groupIndex, t.props.controlIndex, "value");
   }
 
   render() {
