@@ -11,8 +11,11 @@ class AnimationCanvas {
    this.canvas.height = Settings.size.h;
    // this.canvas.height = window.innerHeight;
     this.ctx = this.canvas.getContext('2d');
+
     this.isDrawing = false;
     this.ctx.fillStyle = "#fff";
+    this.ctx.lineJoin = "round";
+    this.ctx.lineCap = "round";
     this.agents = [];
     console.log(this.settings);
     for(var i = 0; i < this.settings.track.value.length; i++){
@@ -35,7 +38,7 @@ class AnimationCanvas {
     this.canvas.onmousedown = function(e){
       this.currAgent = new Agent(this.ctx, this.settings);
       this.currAgent.isRecording = true;
-      this.currAgent.addPoint(e.clientX-this.canvas.width/2, e.clientY-this.canvas.height/2);
+      this.currAgent.addPoint(e.clientX-this.canvas.width/2, e.clientY-this.canvas.height/2, this.settings.size.value);
       this.agents[this.settings.track.recording].push(this.currAgent);
       this.isDrawing = true;
     }.bind(this);
@@ -72,7 +75,7 @@ class AnimationCanvas {
         case 100: // d, remove last
           if(this.agents[this.settings.track.recording].length > 0) this.agents[this.settings.track.recording].splice(this.agents[this.settings.track.recording].length-1, 1);
           break;
-        case 114:
+        case 82:
           if(this.isRecording ){
             
             this.stopRecording();
@@ -81,7 +84,7 @@ class AnimationCanvas {
             this.startRecording();
           }
           break;
-        case 104: // h = hide controls
+        case 72: // h = hide controls
           this.parent.toggleControls();
           break;
         default:
@@ -163,7 +166,7 @@ class AnimationCanvas {
   render(){
     //console.log("rendering");
      if(this.isDrawing){
-        this.currAgent.addPoint(this.mousePos.x, this.mousePos.y);
+        this.currAgent.addPoint(this.mousePos.x, this.mousePos.y, this.settings.size.value);
       }
     this.ctx.clearRect(-this.canvas.width/2, -this.canvas.height/2, this.canvas.width, this.canvas.height);
     for(var i = 0; i < this.agents.length; i++){

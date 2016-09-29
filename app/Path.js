@@ -1,21 +1,25 @@
 /*utility functions for calculating path*/
+import Settings from './settings.json';
 
 class Path {
   static reverse(points){
     return points.reverse();
   }
 
-  static calculateOffset(points, offset, index){
+  static calculateOffset(points, offset, index, boundsCheck){
     /*translate by difference between old starting point and new*/
-     // if(offset.x > window.innerWidth) offset.x -= window.innerWidth;
-     //  if(offset.x < 0) offset.x += window.innerWidth;
-     //  if(offset.y > window.innerHeight) offset.y -= window.innerHeight;
-     //  if(offset.y < 0) offset.y += window.innerHeight;
+     // 
    if(points.length > index){
+    if(boundsCheck){
+      if(offset.x > Settings.size.w/2) offset.x -= Settings.size.w;
+      if(offset.x < -Settings.size.w/2) offset.x += Settings.size.w;
+      if(offset.y > Settings.size.h/2) offset.y -= Settings.size.h;
+      if(offset.y < -Settings.size.h/2) offset.y += Settings.size.h;
+    }
     var off = {x: offset.x-points[index].x, y: offset.y-points[index].y}
 
     return points.map(function(pt){
-      var newPt = this.addPolarCoords({x: pt.x + off.x, y: pt.y + off.y});
+      var newPt = this.addPolarCoords({x: pt.x + off.x, y: pt.y + off.y, size: pt.size});
       // if(newPt.x > window.innerWidth) newPt.x -= window.innerWidth;
       // if(newPt.x < 0) newPt.x += window.innerWidth;
       // if(newPt.y > window.innerHeight) newPt.y -= window.innerHeight;
@@ -28,13 +32,21 @@ class Path {
     
   }
 
+
   /* create continuous line */
   static addNextPoint(points){
     if(points.length >= 2){
       var off = {x: points[1].x-points[0].x, y: points[1].y-points[0].y};
-      var newPt = this.addPolarCoords({x: points[points.length-1].x + off.x, y: points[points.length-1].y + off.y});
+      var newPt = {x: points[points.length-1].x + off.x, y: points[points.length-1].y + off.y, size: points[1].size};
+     
+     /* TO DO : if ENTIRE line outside bounds, offset all points. but what about large shapes?? split lines?c*/
+      // if(newPt.x > Settings.size.w/2) newPt.x -= Settings.size.w;
+      // if(newPt.x < -Settings.size.w/2) newPt.x += Settings.size.w;
+      // if(newPt.y > Settings.size.h/2) newPt.y -= Settings.size.h;
+      // if(newPt.y < -Settings.size.h/2) newPt.y += Settings.size.h;
+
       points.splice(0, 1);
-      points.push(newPt);
+      points.push(this.addPolarCoords(newPt));
       return points;
     } else {
       return points;
@@ -54,7 +66,7 @@ class Path {
       var off = {theta: offset.theta - points[index].theta, r: offset.r - points[index].r};
       console.log("difference", off);
       return points.map(function(pt){
-        var newPt = this.addRectCoords({r: pt.r + off.r, theta: pt.theta + off.theta});
+        var newPt = this.addRectCoords({r: pt.r + off.r, theta: pt.theta + off.theta, size: pt.size});
        // var newPt = this.addRectCoords({theta: pt.theta + off.theta, r: pt.r});
         return newPt;
       }.bind(this));

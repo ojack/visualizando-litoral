@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Controls from './Controls.js';
 import AnimationCanvas from './AnimationCanvas.js';
+import Midi from './Midi.js';
 import options from './options.json';
 
 //import './App.css';
@@ -8,6 +9,7 @@ import options from './options.json';
 class App extends Component {
   constructor(props){
     super(props);
+    
     
     this.state = {options: options, showControls: true, keysDown: []};
 
@@ -23,6 +25,8 @@ class App extends Component {
 
   componentDidMount(){
     this.anim = new AnimationCanvas("draw", this.settings, this);
+    this.midi = new Midi();
+    this.setState({midi: this.midi});
   }
   
   toggleControls(){
@@ -52,7 +56,7 @@ class App extends Component {
     };
     var controls = [];
     if(this.state.showControls){
-      controls = <Controls update={this.update.bind(this)} keysDown={this.state.keysDown} options={this.state.options}/>
+      controls = <Controls update={this.update.bind(this)} midi={this.state.midi} keysDown={this.state.keysDown} options={this.state.options}/>
     }
     return <div style={style}>
       <canvas id="draw"></canvas>

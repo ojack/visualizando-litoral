@@ -6,7 +6,7 @@
 				"type": "select", 
 				"name": "shape",
 				"options": ["line", "circle", "square"],
-				"value": 0
+				"value": 1
 			},
 			{
 				"type": "slider",
@@ -14,7 +14,24 @@
 				"label": "tamaño",
 				"value": 89,
 				"min": 1,
-				"max": 300
+				"max": 300,
+				"midiChannel": 0
+			},
+			{
+				"type": "slider",
+				"name": "length",
+				"label": "long. de linea",
+				"value": 20,
+				"min": 1,
+				"max": 300,
+				"midiChannel": 1
+			},
+			{
+				"type": "color", 
+				"name": "color",
+				"value": {
+					"rgbString": "rgb(255, 255, 255)"
+				}
 			}
 
 		]
@@ -42,14 +59,8 @@
 				"name": "coordType",
 				"options": ["coordenadas-rect", "coordenadas-polar"],
 				"value": 0
-			},
-			{
-				"type": "color", 
-				"name": "color",
-				"value": {
-					"rgbString": "rgb(255, 255, 255)"
-				}
 			}
+			
 
 		]
 	},
@@ -59,7 +70,7 @@
 			{
 				"type": "multi-select",
 				"name": "track",
-				"label": "(click = visibilidad, shift + click = grabar)",
+				"label": "(click: visibilidad, shift + click: grabar)",
 				"options": [1, 2, 3, 4],
 				"value": [true, false, false, false],
 				"recording": 0
