@@ -12,7 +12,7 @@ class Agent {
     this.coordType = settings.coordType.value;
     this.color = settings.color.value.rgbString;
     this.shape = settings.shape.value;
-    console.log("REPEAT", this.repeat);
+    //console.log("REPEAT", this.repeat);
   }
 
   addPoint(x, y, size){
@@ -45,8 +45,9 @@ class Agent {
     switch(this.repeat) {
       case 1:
          // console.log(" point offset", this.points[this.points.length-1]);
-          this.setOffset(this.points[this.points.length-1]);
-          console.log(this.points);
+          //this.setOffset(this.points[this.points.length-1]);
+          this.points = Path.calculateOffset(this.points, this.points[this.points.length-1], this.stepIndex, true);
+         // console.log(this.points);
           break;
       case 2:
           this.points = Path.reverse(this.points);

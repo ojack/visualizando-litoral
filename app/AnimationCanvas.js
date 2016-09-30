@@ -17,6 +17,7 @@ class AnimationCanvas {
     this.ctx.lineJoin = "round";
     this.ctx.lineCap = "round";
     this.agents = [];
+    this.currPath = [];
     console.log(this.settings);
     for(var i = 0; i < this.settings.track.value.length; i++){
       var agentsPerTrack = [];
@@ -52,6 +53,8 @@ class AnimationCanvas {
     this.canvas.onmouseup = function(e){
       this.isDrawing = false;
       this.currAgent.isRecording = false;
+      this.currPath = this.currAgent.points.slice();
+      console.log("mouse up", this.currAgent.points, this.currPath);
     }.bind(this);
 
     // window.onresize = function(){
@@ -153,11 +156,13 @@ class AnimationCanvas {
   }
 
   addAgent(pos){
+    console.log("add agent", this.currPath);
     var agent = new Agent(this.ctx, this.settings);
     if(this.settings.synchro.value==0){
-      agent.setPath(this.currAgent.points, this.currAgent.stepIndex);
+     // agent.setPath(this.currAgent.points, this.currAgent.stepIndex);
+      agent.setPath(this.currPath.slice(), this.currAgent.stepIndex)
     }else{
-      agent.setPath(this.currAgent.points, 0);
+      agent.setPath(this.currPath.slice(), 0);
     }
     agent.setOffset(pos);
     this.agents[this.settings.track.recording].push(agent);
