@@ -54,7 +54,7 @@ class AnimationCanvas {
       this.isDrawing = false;
       this.currAgent.isRecording = false;
       this.currPath = this.currAgent.points.slice();
-      console.log("mouse up", this.currAgent.points, this.currPath);
+      console.log("mouse up", JSON.stringify(this.currAgent.points));
     }.bind(this);
 
     // window.onresize = function(){

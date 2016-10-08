@@ -9,17 +9,27 @@ class SelectControl extends Component {
 
   	 var options = this.props.info.options.map(function(name, ind){
   	 	var imgUrl;
-  	 
-  	 	if(this.props.info.value===ind){
-  	 	//	imgUrl = require("./../images/"+name+"-selected-01.png");
-        imgUrl = "./images/"+name+"-selected-01.png";
-  	 	}else{
-  	 	//	imgUrl = require("./../images/"+name+"-01.png");
-      imgUrl = "./images/"+name+"-01.png";
-  	 	}
-  	 
-  	 	return <img className="control-button" src={imgUrl} key={name} alt={name} onClick={this.update.bind(null, ind, this)} />;
-  	 }.bind(this));
+       var className = "control-button";
+        if(this.props.info.value===ind){
+          className+= " selected";
+        }
+      
+        /*using icon from font awesome rather than custom image*/
+  	   if(name.includes("fa")){
+        className+= " fa "+name;
+        return <div className={className} onClick={this.update.bind(null, ind, this)}></div>;
+       } else {
+    	 	if(this.props.info.value===ind){
+    	 	//	imgUrl = require("./../images/"+name+"-selected-01.png");
+          imgUrl = "./images/"+name+"-selected-01.png";
+    	 	}else{
+    	 	//	imgUrl = require("./../images/"+name+"-01.png");
+        imgUrl = "./images/"+name+"-01.png";
+    	 	}
+    	 
+    	 	return <img className={className} src={imgUrl} key={name} alt={name} onClick={this.update.bind(null, ind, this)} />;
+  	   }
+     }.bind(this));
      var label = [];
      if(this.props.info.label) label = (<h4>{this.props.info.label}</h4>);
     return (

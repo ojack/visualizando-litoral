@@ -10,7 +10,8 @@ class ColorPalette extends Component {
     var style = {
       position: "relative",
       width: "150px",
-      height: "150px"
+      height: "150px",
+      display: "inline-block"
     }
     return (
       <div style = {style}>

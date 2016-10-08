@@ -5,6 +5,7 @@ class Agent {
     this.points = [];
     this.stepIndex = 0;
     this.ctx = ctx;
+    this.image = settings.canvas;
     this.isRecording = false;
     this.size = settings.size.value;
     this.length = settings.length.value;
@@ -12,6 +13,7 @@ class Agent {
     this.coordType = settings.coordType.value;
     this.color = settings.color.value.rgbString;
     this.shape = settings.shape.value;
+    console.log("IMAGE", this.image);
     //console.log("REPEAT", this.repeat);
   }
 
@@ -111,6 +113,9 @@ class Agent {
             this.ctx.translate(currPt.x, currPt.y);
             this.ctx.fillRect(-currPt.size/2, -currPt.size/2,currPt.size, currPt.size);
             break;
+        case 3:
+            this.ctx.translate(currPt.x, currPt.y);
+            this.ctx.drawImage(this.image, -currPt.size/2, -currPt.size/2,currPt.size, currPt.size);
       } 
       
       this.ctx.restore();

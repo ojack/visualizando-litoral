@@ -33,6 +33,7 @@ cursor: pointer;
 -moz-user-select: none;
 -ms-user-select: none;
 user-select: none;
+font-size: 22px;
 }
 
  .control-button.selected{
@@ -53,6 +54,8 @@ user-select: none;
   border: 4px solid #f00;
  }
 
+
+
 .controls{
   position: fixed;
   top: 0px;
@@ -70,10 +73,11 @@ user-select: none;
   margin-bottom: 15px;
   margin-top: 10px;
   display: inline-block;
+   vertical-align: middle;
 }
 
 .control-group{
-  
+  vertical-align: middle;
   padding: 10px;
   border: solid 1px #666;
 

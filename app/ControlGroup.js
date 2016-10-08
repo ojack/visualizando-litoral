@@ -3,6 +3,7 @@ import SelectControl from './SelectControl.js';
 import MultiSelect from './MultiSelect.js';
 import SliderControl from './SliderControl.js';
 import ColorPalette from './ColorPalette.js';
+import CustomImage from './CustomImage.js';
 
 class ControlGroup extends Component {
   render() {
@@ -17,6 +18,10 @@ class ControlGroup extends Component {
       } else if(obj.type=="multi-select"){
         //console.log("rendering multi");
         return <MultiSelect {...this.props} controlIndex={ind} info={obj} />
+      } else if(obj.type=="custom-image"){
+        return <CustomImage setCanvas={this.props.setCanvas}/>
+      } else if(obj.type=="spacer"){
+        return<div style={{width: obj.width, height: obj.height, display: "inline-block"}}></div>;
       }
   	 }.bind(this));
 

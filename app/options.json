@@ -5,9 +5,10 @@
 			{
 				"type": "select", 
 				"name": "shape",
-				"options": ["line", "circle", "square"],
+				"options": ["line", "circle", "square", "fa-file-image-o"],
 				"value": 1
 			},
+			
 			{
 				"type": "slider",
 				"name": "size",
@@ -27,11 +28,22 @@
 				"midiChannel": 1
 			},
 			{
+				"type": "spacer",
+				"width": 100,
+				"height": 50
+			},
+			{
 				"type": "color", 
 				"name": "color",
 				"value": {
 					"rgbString": "rgb(255, 255, 255)"
 				}
+			},
+			{
+				"type": "custom-image", 
+				"name": "custom-draw",
+				"icon": "fa-pencil",
+				"value": false
 			}
 
 		]

@@ -23,6 +23,7 @@
   "dependencies": {
     "coloreact": "^0.1.9",
     "react": "0.14.5",
-    "react-dom": "0.14.5"
+    "react-dom": "0.14.5",
+    "react-dropzone": "^3.6.0"
   }
 }
