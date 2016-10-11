@@ -77,6 +77,7 @@ function bundleApp(isProduction) {
   	appBundler
   		// transform ES6 and JSX to ES5 with babelify
 	  	.transform("babelify", {presets: ["es2015", "react"]})
+	  	.transform("glslify")
 	    .bundle()
 	    .on('error',gutil.log)
 	    .pipe(source('bundle.js'))

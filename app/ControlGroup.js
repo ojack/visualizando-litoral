@@ -14,7 +14,8 @@ class ControlGroup extends Component {
   	 	} else if(obj.type=="slider"){
   	 		return <SliderControl {...this.props} controlIndex={ind} info={obj} midi={this.props.midi}/>
   	 	} else if(obj.type=="color"){
-        return <ColorPalette {...this.props} controlIndex={ind} info={obj} />
+        return null;
+       // return <ColorPalette {...this.props} controlIndex={ind} info={obj} />
       } else if(obj.type=="multi-select"){
         //console.log("rendering multi");
         return <MultiSelect {...this.props} controlIndex={ind} info={obj} />

@@ -1,7 +1,7 @@
 "use strict";
 
 import React, { Component } from 'react';
-import ColorPicker from 'coloreact';
+//import ColorPicker from 'coloreact';
 
 
 class ColorPalette extends Component {

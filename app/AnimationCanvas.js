@@ -1,8 +1,11 @@
 import Agent from './Agent.js';
 import Settings from './settings.json';
+import WebGL from './WebGL.js';
 
 class AnimationCanvas {
   constructor(canvId, settings, parent) {
+
+    this.webGL = new WebGL(Settings.size.w, Settings.size.h);
     this.parent = parent;
     this.settings = settings;
     this.canvas = document.getElementById(canvId);
@@ -30,6 +33,7 @@ class AnimationCanvas {
     this.isRecording = false;
     this.keysDown = [];
     this.ctx.translate(this.canvas.width/2, this.canvas.height/2);
+    
     //var stream = this.canvas.captureStream(60); 
     // var mediaRecorder = new MediaRecorder(stream);
     // mediaRecorder.start();
@@ -170,6 +174,7 @@ class AnimationCanvas {
 
   render(){
     //console.log("rendering");
+    this.webGL.render();
      if(this.isDrawing){
         this.currAgent.addPoint(this.mousePos.x, this.mousePos.y, this.settings.size.value);
       }
