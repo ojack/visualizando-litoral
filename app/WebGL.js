@@ -15,9 +15,8 @@ class WebGL {
     });
 
     document.body.appendChild(gl.canvas);
-    var v = glslify('./waves.vert');
-    console.log("VERT", v);
-    shader = createShader(gl, glslify('./waves.vert'), glslify('./waves.frag'));
+   
+    shader = createShader(gl, glslify('./shaders/waves.vert'), glslify('./shaders/waves.frag'));
     shader.bind()
     shader.uniforms.iResolution = [gl.drawingBufferWidth, gl.drawingBufferHeight, 0]
     shader.uniforms.iGlobalTime = time
