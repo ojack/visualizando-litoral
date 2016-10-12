@@ -187,7 +187,9 @@ class AnimationCanvas {
         this.currAgent.addPoint(this.mousePos.x, this.mousePos.y, this.settings.size.value);
       }
     this.ctx.clearRect(-this.canvas.width/2, -this.canvas.height/2, this.canvas.width, this.canvas.height);
-   
+    
+
+
     for(var i = 0; i < this.agents.length; i++){
       if(this.settings.track.value[i]==true){
         for(var j = 0; j < this.agents[i].length; j++){
@@ -196,7 +198,18 @@ class AnimationCanvas {
         }
       }
     }
-    this.webGL.updatePoints(this.currAgent.currPt());
+    var glPoints = [];
+    var l = this.agents[0].length;
+    for(var i = 0; i < 10; i++){
+     
+      if(i < l){
+        glPoints.push(this.agents[0][l-i-1].currPt());
+      } else {
+        glPoints.push([0.0,0.0,0.0,0.0]);
+      }
+      
+    }
+    this.webGL.updatePoints(glPoints);
     this.webGL.render();
     window.requestAnimationFrame(this.render.bind(this));
   }

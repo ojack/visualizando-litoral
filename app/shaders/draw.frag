@@ -112,12 +112,12 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
   vec2 uv = squareFrame(iResolution.xy, fragCoord);
   float d;
  
-  vec2 ro = vec2(iMouse.xy / iResolution.xy)*vec2(2.0, -2.0);
+  vec2 a1 = vec2(agent0.xy / iResolution.xy)*vec2(2.0, -2.0);
   //ro = squareFrame(iResolution.xy, ro);
 
   //vec2 rd = normalize(-ro);
 
-  float circle = sdCircle(uv, ro, 0.2);
+  float circle = sdCircle(uv, a1, 0.2);
   float circle2 = shape_circle(uv);
  // d = shape(uv);
   d = smin(shape_circle(uv - vec2(cos(t))), circle, 0.8);

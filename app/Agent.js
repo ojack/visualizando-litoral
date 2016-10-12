@@ -78,9 +78,10 @@ class Agent {
   }
 
   currPt(){
-    return this.points[this.stepIndex];
+    var pt = this.points[this.stepIndex];
+    return [pt.x, pt.y, pt.size, this.shape];
   }
-  
+
   draw(){
     if(this.points.length > 0){
       this.ctx.fillStyle = this.color;

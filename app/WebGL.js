@@ -21,6 +21,10 @@ class WebGL {
     time = Date.now()/1000;
     this.shaderIndex = 0;
 
+    this.agentPoints = [];
+    for(var i = 0; i < 10; i++){
+      this.agentPoints[i] = [0.0, 0.0, 0.0, 0.0];
+    }
     gl = require('webgl-context')({
       width: w,
       height: h
@@ -46,11 +50,9 @@ class WebGL {
    //` loop(this.render).start();
   }
   
-  updatePoints(pt){
-    if(pt){
-      this.mouse = [pt.x, pt.y, 0.0];
-      console.log(this.mouse);
-    }
+  updatePoints(pts){
+    this.agentPoints = pts;
+    //console.log(pts);
   }
 
   loadShader(){
@@ -74,7 +76,10 @@ class WebGL {
 
     shader.bind()
     shader.uniforms.iGlobalTime = t;
-    shader.uniforms.iMouse = this.mouse;
+    //shader.uniforms.iMouse = this.mouse;
+    for(var i = 0; i < this.agentPoints.length; i++){
+      shader.uniforms["agent"+i]=this.agentPoints[i];
+    }
     shader.uniforms.iResolution = [gl.drawingBufferWidth, gl.drawingBufferHeight, 0]
     triangle(gl)
   }
