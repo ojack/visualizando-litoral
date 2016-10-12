@@ -1,6 +1,7 @@
 import Agent from './Agent.js';
 import Settings from './settings.json';
 import WebGL from './WebGL.js';
+//import live from 'glslify-live';
 
 class AnimationCanvas {
   constructor(canvId, settings, parent) {
@@ -33,7 +34,11 @@ class AnimationCanvas {
     this.isRecording = false;
     this.keysDown = [];
     this.ctx.translate(this.canvas.width/2, this.canvas.height/2);
-    
+
+    // live.on('update', function(filename, id) {
+    //   console.log(filename);
+    //   this.webGL.render();
+    // });
     //var stream = this.canvas.captureStream(60); 
     // var mediaRecorder = new MediaRecorder(stream);
     // mediaRecorder.start();
@@ -58,7 +63,7 @@ class AnimationCanvas {
       this.isDrawing = false;
       this.currAgent.isRecording = false;
       this.currPath = this.currAgent.points.slice();
-      console.log("mouse up", JSON.stringify(this.currAgent.points));
+     // console.log("mouse up", JSON.stringify(this.currAgent.points));
     }.bind(this);
 
     // window.onresize = function(){
@@ -90,6 +95,9 @@ class AnimationCanvas {
             
             this.startRecording();
           }
+          break;
+        case 83: //'s' shader
+          this.webGL.loadShader();
           break;
         case 72: // h = hide controls
           this.parent.toggleControls();
@@ -174,11 +182,12 @@ class AnimationCanvas {
 
   render(){
     //console.log("rendering");
-    this.webGL.render();
+    
      if(this.isDrawing){
         this.currAgent.addPoint(this.mousePos.x, this.mousePos.y, this.settings.size.value);
       }
     this.ctx.clearRect(-this.canvas.width/2, -this.canvas.height/2, this.canvas.width, this.canvas.height);
+   
     for(var i = 0; i < this.agents.length; i++){
       if(this.settings.track.value[i]==true){
         for(var j = 0; j < this.agents[i].length; j++){
@@ -187,6 +196,8 @@ class AnimationCanvas {
         }
       }
     }
+    this.webGL.updatePoints(this.currAgent.currPt());
+    this.webGL.render();
     window.requestAnimationFrame(this.render.bind(this));
   }
 }

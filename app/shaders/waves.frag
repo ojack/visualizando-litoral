@@ -1,8 +1,6 @@
-precision highp float;
 
-uniform vec3 iResolution;
-uniform sampler2D iChannel0;
-uniform float iGlobalTime;
+
+#pragma glslify: import('./uniforms.glsl')
 
 #define ITERATIONS 13
 
@@ -35,6 +33,6 @@ void main() {
   //We do this on every fragment, but you 
   //might get a performance boost by only
   //blurring fragments where radius > 0
-  vec3 color = vec3(uv, 1.0);
-  gl_FragColor = vec4(color, 1.0);
+ // vec3 color = vec3(uv.yx, 1.0);
+  gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);
 }

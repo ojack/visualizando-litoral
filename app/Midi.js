@@ -2,13 +2,13 @@
 
 class Midi {
   constructor(){
-    console.log("init midi");
+   // console.log("init midi");
     navigator.requestMIDIAccess().then(this.onMIDISuccess.bind(this), this.onMIDIFailure );
     this.channels = [];
   }
 
   onMIDISuccess(access){
-    console.log(access);
+   // console.log(access);
     this.midi = access;
     this.midi.inputs.forEach(function(entry){entry.onmidimessage = this.handleMessage.bind(this)}.bind(this));
    // this.listInputsAndOutputs(access);
@@ -26,9 +26,9 @@ class Midi {
     for (var entry of midiAccess.inputs) {
       var input = entry[1];
       
-      console.log( "Input port [type:'" + input.type + "'] id:'" + input.id +
-        "' manufacturer:'" + input.manufacturer + "' name:'" + input.name +
-        "' version:'" + input.version + "'" );
+      // console.log( "Input port [type:'" + input.type + "'] id:'" + input.id +
+      //   "' manufacturer:'" + input.manufacturer + "' name:'" + input.name +
+      //   "' version:'" + input.version + "'" );
     }
 
     for (var entry of midiAccess.outputs) {
@@ -46,7 +46,7 @@ class Midi {
   handleMessage(msg){
    // console.log(msg.data);
     var channel = msg.data[1];
-    console.log(this.channels);
+   // console.log(this.channels);
     if(this.channels[channel]!=null){
      // console.log(this.channels)
       this.channels[channel].callback.call(this.channels[channel].parent, msg.data[2]);
