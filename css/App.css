@@ -1,6 +1,7 @@
 html, body{
   font-family: "Courier New", Courier, monospace;
   margin: 0px;
+  background-color: #000;
 }
 
 h3{
@@ -63,9 +64,9 @@ font-size: 22px;
   padding: 0px;
   height: 100%;
   color: #fff;
-  max-width: 400px;
+  max-width: 300px;
   font-family: "Courier New", Courier, monospace;
-  background-color: rgba(80, 80, 80, 1.0);
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
 .control-element{

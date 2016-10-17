@@ -56,15 +56,13 @@ class Path {
   static calculatePolarOffset(points, o, index){
     //console.log("calc offset", o);
     var p = this.toPolar(o);
-     console.log("rect", o);
-    console.log("polar", p);
-     console.log("re-rect", this.toRect(p));
+    
 
     var offset = this.addPolarCoords(o);
     if(points.length > index){
-      console.log("original point", points[index]);
+     // console.log("original point", points[index]);
       var off = {theta: offset.theta - points[index].theta, r: offset.r - points[index].r};
-      console.log("difference", off);
+     // console.log("difference", off);
       return points.map(function(pt){
         var newPt = this.addRectCoords({r: pt.r + off.r, theta: pt.theta + off.theta, size: pt.size});
        // var newPt = this.addRectCoords({theta: pt.theta + off.theta, r: pt.r});

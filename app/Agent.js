@@ -11,7 +11,8 @@ class Agent {
     this.length = settings.length.value;
     this.repeat = settings.repeat.value;
     this.coordType = settings.coordType.value;
-    this.color = settings.color.value.rgbString;
+    var c = settings.color.value;
+    this.color = "rgba("+c.r + "," + c.g + "," + c.b + "," + c.a + ")";
     this.shape = settings.shape.value;
     console.log("IMAGE", this.image);
     //console.log("REPEAT", this.repeat);

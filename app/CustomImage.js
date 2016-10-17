@@ -21,8 +21,8 @@ class CustomImage extends Component {
   }
 
   render() {
-    var w = 150;
-    var h = 150;
+    var w = 40;
+    var h = 40;
     var style = {
       position: "relative",
        width: w,

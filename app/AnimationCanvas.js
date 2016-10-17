@@ -72,44 +72,49 @@ class AnimationCanvas {
     // }.bind(this);
 
     window.onkeydown = function(e){
-      var keyCode = e.keyCode || e.which;
-      console.log(e);
-      switch(keyCode) {
-        case 65: // add, key a
-          this.addAgent(this.mousePos);
-          break;
-        case 67: // clear
-          this.agents[this.settings.track.recording] = [];
-          break;
-        case 102: // f, remove first
-          if(this.agents[this.settings.track.recording].length > 0) this.agents[this.settings.track.recording].splice(0, 1);
-          break;
-        case 100: // d, remove last
-          if(this.agents[this.settings.track.recording].length > 0) this.agents[this.settings.track.recording].splice(this.agents[this.settings.track.recording].length-1, 1);
-          break;
-        case 82:
-          if(this.isRecording ){
-            
-            this.stopRecording();
-          } else {
-            
-            this.startRecording();
-          }
-          break;
-        case 83: //'s' shader
-          this.webGL.loadShader();
-          break;
-        case 72: // h = hide controls
-          this.parent.toggleControls();
-          break;
-        default:
-          break;
-     }
-     if(this.keysDown.indexOf(keyCode) < 0){
-        this.keysDown.push(keyCode);
-        this.parent.setKeysDown(this.keysDown);
-     }
 
+      var keyCode = e.keyCode || e.which;
+      
+     if(e.target.nodeName!="TEXTAREA"){
+        switch(keyCode) {
+          case 65: // add, key a
+            this.addAgent(this.mousePos);
+            break;
+          case 67: // clear
+            this.agents[this.settings.track.recording] = [];
+            break;
+          case 69: // e, toggle editor
+
+            this.webGL.toggleEditor();
+          case 102: // f, remove first
+            if(this.agents[this.settings.track.recording].length > 0) this.agents[this.settings.track.recording].splice(0, 1);
+            break;
+          case 100: // d, remove last
+            if(this.agents[this.settings.track.recording].length > 0) this.agents[this.settings.track.recording].splice(this.agents[this.settings.track.recording].length-1, 1);
+            break;
+          case 82:
+            if(this.isRecording ){
+              
+              this.stopRecording();
+            } else {
+              
+              this.startRecording();
+            }
+            break;
+          case 83: //'s' shader
+            this.webGL.loadShader();
+            break;
+          case 72: // h = hide controls
+            this.parent.toggleControls();
+            break;
+          default:
+            break;
+       }
+       if(this.keysDown.indexOf(keyCode) < 0){
+          this.keysDown.push(keyCode);
+          this.parent.setKeysDown(this.keysDown);
+       }
+     }
     }.bind(this);
     window.onkeyup = function(e){
       console.log(this.keysDown);
@@ -189,8 +194,20 @@ class AnimationCanvas {
     this.ctx.clearRect(-this.canvas.width/2, -this.canvas.height/2, this.canvas.width, this.canvas.height);
     
 
-
-    for(var i = 0; i < this.agents.length; i++){
+    var glPoints = [];
+    var l = this.agents[0].length;
+    /*update track1 positions for shader uniforms*/
+    for(var i = 0; i < 10; i++){
+     
+      if(i < l){
+        this.agents[0][l-i-1].update();
+        glPoints.push(this.agents[0][l-i-1].currPt());
+      } else {
+        glPoints.push([-1000.0,-1000.0,-1000.0,-1000.0]);
+      }
+      
+    }
+    for(var i = 1; i < this.agents.length; i++){
       if(this.settings.track.value[i]==true){
         for(var j = 0; j < this.agents[i].length; j++){
           this.agents[i][j].update();
@@ -198,17 +215,7 @@ class AnimationCanvas {
         }
       }
     }
-    var glPoints = [];
-    var l = this.agents[0].length;
-    for(var i = 0; i < 10; i++){
-     
-      if(i < l){
-        glPoints.push(this.agents[0][l-i-1].currPt());
-      } else {
-        glPoints.push([0.0,0.0,0.0,0.0]);
-      }
-      
-    }
+   
     this.webGL.updatePoints(glPoints);
     this.webGL.render();
     window.requestAnimationFrame(this.render.bind(this));

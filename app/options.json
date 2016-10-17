@@ -8,6 +8,16 @@
 				"options": ["line", "circle", "square", "fa-file-image-o"],
 				"value": 1
 			},
+			{
+				"type": "color", 
+				"name": "color",
+				"value": {
+					"r": 200,
+					"g": 10,
+					"b": 8,
+					"a": 0.8
+				}
+			},
 			
 			{
 				"type": "slider",
@@ -19,6 +29,12 @@
 				"midiChannel": 0
 			},
 			{
+				"type": "custom-image", 
+				"name": "custom-draw",
+				"icon": "fa-pencil",
+				"value": false
+			},
+			{
 				"type": "slider",
 				"name": "length",
 				"label": "long. de linea",
@@ -26,24 +42,6 @@
 				"min": 1,
 				"max": 300,
 				"midiChannel": 1
-			},
-			{
-				"type": "spacer",
-				"width": 100,
-				"height": 50
-			},
-			{
-				"type": "color", 
-				"name": "color",
-				"value": {
-					"rgbString": "rgb(255, 255, 255)"
-				}
-			},
-			{
-				"type": "custom-image", 
-				"name": "custom-draw",
-				"icon": "fa-pencil",
-				"value": false
 			}
 
 		]
@@ -84,8 +82,8 @@
 				"name": "track",
 				"label": "(click: visibilidad, shift + click: grabar)",
 				"options": [1, 2, 3, 4],
-				"value": [true, false, false, false],
-				"recording": 0
+				"value": [true, true, false, false],
+				"recording": 1
 				
 			}
 		]
