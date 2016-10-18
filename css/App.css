@@ -35,11 +35,13 @@ cursor: pointer;
 -ms-user-select: none;
 user-select: none;
 font-size: 22px;
+border: none;
 }
 
  .control-button.selected{
   color: #3f3f3f;
   background-color: #fff;
+  border: 2px #fff solid;
 }
 
 .control-button.recording{

@@ -22,7 +22,7 @@ var Agent = function () {
     this.points = [];
     this.stepIndex = 0;
     this.ctx = ctx;
-    this.image = settings.canvas;
+    // this.image = settings.canvas;
     this.isRecording = false;
     this.size = settings.size.value;
     this.length = settings.length.value;
@@ -31,6 +31,9 @@ var Agent = function () {
     var c = settings.color.value;
     this.color = "rgba(" + c.r + "," + c.g + "," + c.b + "," + c.a + ")";
     this.shape = settings.shape.value;
+    if (this.shape > 2) {
+      this.image = document.getElementById("c" + this.shape);
+    }
     console.log("IMAGE", this.image);
     //console.log("REPEAT", this.repeat);
   }
@@ -141,7 +144,7 @@ var Agent = function () {
             this.ctx.translate(currPt.x, currPt.y);
             this.ctx.fillRect(-currPt.size / 2, -currPt.size / 2, currPt.size, currPt.size);
             break;
-          case 3:
+          default:
             this.ctx.translate(currPt.x, currPt.y);
             this.ctx.drawImage(this.image, -currPt.size / 2, -currPt.size / 2, currPt.size, currPt.size);
         }
@@ -470,7 +473,7 @@ var App = function (_Component) {
 
     var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
-    _this.state = { options: _options2.default, showControls: true, keysDown: [] };
+    _this.state = { options: _options2.default, showControls: true, keysDown: [], images: [] };
 
     var settings = {};
     for (var i = 0; i < _this.state.options.length; i++) {
@@ -518,6 +521,15 @@ var App = function (_Component) {
       this.settings.canvas = canvas;
     }
   }, {
+    key: 'addUploadedImage',
+    value: function addUploadedImage(image) {
+      var images = this.state.images;
+      var newOptions = this.state.options;
+      newOptions[0].controls[0].options.push(image);
+      this.setState({ options: newOptions });
+      // this.setState({images: images});
+    }
+  }, {
     key: 'render',
     value: function render() {
       var style = {
@@ -530,7 +542,7 @@ var App = function (_Component) {
       var controls,
           draw = [];
       if (this.state.showControls) {
-        controls = _react2.default.createElement(_Controls2.default, { update: this.update.bind(this), midi: this.state.midi, keysDown: this.state.keysDown, options: this.state.options, setCanvas: this.setCanvas.bind(this) });
+        controls = _react2.default.createElement(_Controls2.default, { update: this.update.bind(this), midi: this.state.midi, keysDown: this.state.keysDown, options: this.state.options, setCanvas: this.addUploadedImage.bind(this), images: this.state.images });
       }
       console.log("val", this.settings.shape.value);
 
@@ -731,7 +743,7 @@ var ControlGroup = function (_Component) {
       var controls = this.props.info.controls.map(function (obj, ind) {
         if (obj.type == "select") {
           // console.log("rendering select");
-          return _react2.default.createElement(_SelectControl2.default, _extends({}, this.props, { controlIndex: ind, info: obj }));
+          return _react2.default.createElement(_SelectControl2.default, _extends({}, this.props, { controlIndex: ind, info: obj, images: this.props.images }));
         } else if (obj.type == "slider") {
           return _react2.default.createElement(_SliderControl2.default, _extends({}, this.props, { controlIndex: ind, info: obj, midi: this.props.midi }));
         } else if (obj.type == "color") {
@@ -803,7 +815,7 @@ var Controls = function (_Component) {
     key: 'render',
     value: function render() {
       var groups = this.props.options.map(function (obj, ind) {
-        return _react2.default.createElement(_ControlGroup2.default, { info: obj, update: this.props.update, midi: this.props.midi, groupIndex: ind, keysDown: this.props.keysDown, key: "groups " + ind, setCanvas: this.props.setCanvas });
+        return _react2.default.createElement(_ControlGroup2.default, { info: obj, update: this.props.update, midi: this.props.midi, groupIndex: ind, keysDown: this.props.keysDown, key: "groups " + ind, setCanvas: this.props.setCanvas, images: this.props.images });
       }.bind(this));
       return _react2.default.createElement(
         'div',
@@ -855,25 +867,34 @@ var CustomImage = function (_Component) {
     value: function onDrop(files) {
       console.log(this);
       console.log('Received files: ', files);
-      var reader = new FileReader();
-      reader.onload = function (event) {
-        var img = new Image();
-        img.onload = function () {
-          console.log(this);
-          this.canvas.width = 400;
-          this.canvas.height = 300;
-          this.ctx = this.canvas.getContext('2d');
-          this.ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
+      files.map(function (file) {
+        var reader = new FileReader();
+        reader.onload = function (event) {
+          var img = new Image();
+          img.onload = function () {
+
+            this.props.setCanvas(img);
+          }.bind(this);
+          img.src = event.target.result;
         }.bind(this);
-        img.src = event.target.result;
-      }.bind(this);
-      reader.readAsDataURL(files[0]);
+        reader.readAsDataURL(file);
+      }.bind(this));
+      //  var reader = new FileReader();
+      // reader.onload = function(event){
+      //     var img = new Image();
+      //     img.onload = function(){
+
+      //         this.props.setCanvas(img);
+      //     }.bind(this);
+      //     img.src = event.target.result;
+      // }.bind(this);
+      // reader.readAsDataURL(files[0]);   
     }
   }, {
     key: 'render',
     value: function render() {
-      var w = 40;
-      var h = 40;
+      var w = 60;
+      var h = 60;
       var style = {
         position: "relative",
         width: w,
@@ -886,7 +907,8 @@ var CustomImage = function (_Component) {
         top: 0,
         left: 0,
         width: "100%",
-        height: "100%"
+        height: "100%",
+        color: "#fff"
       };
       var dropStyle = {
         width: w,
@@ -899,23 +921,20 @@ var CustomImage = function (_Component) {
         height: h,
         backgroundColor: "#fff"
       };
-
+      var iconStyle = {
+        fontSize: "40px",
+        margin: "10px"
+      };
       return _react2.default.createElement(
         'div',
         { style: style },
-        _react2.default.createElement('canvas', { style: canvasStyle, key: 'preview-canvas', ref: function (canvas) {
-            console.log(canvas);
-            console.log(this);
-            this.canvas = canvas;
-            this.props.setCanvas(canvas);
-          }.bind(this) }),
         _react2.default.createElement(
           'div',
           { style: canvasStyle },
           _react2.default.createElement(
             Dropzone,
             { style: dropStyle, activeStyle: activeStyle, onDrop: this.onDrop.bind(this), disableClick: true },
-            _react2.default.createElement('div', null)
+            _react2.default.createElement('i', { style: iconStyle, className: 'fa fa-file-image-o' })
           )
         )
       );
@@ -1277,6 +1296,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = require("react");
@@ -1316,22 +1337,53 @@ var SelectControl = function (_Component) {
           className += " selected";
         }
 
-        /*using icon from font awesome rather than custom image*/
-        if (name.includes("fa")) {
-          className += " fa " + name;
-          return _react2.default.createElement("div", { className: className, onClick: this.update.bind(null, ind, this) });
+        console.log("NAME", typeof name === "undefined" ? "undefined" : _typeof(name));
+        if ((typeof name === "undefined" ? "undefined" : _typeof(name)) == "object") {
+          return _react2.default.createElement("canvas", { className: className, key: ind, id: "c" + ind, onClick: this.update.bind(null, ind, this),
+            ref: function (canvas) {
+              if (canvas != null) {
+                canvas.width = 400;
+                canvas.height = 300;
+                var ctx = canvas.getContext('2d');
+                ctx.drawImage(name, 0, 0, canvas.width, canvas.height);
+              }
+              //  this.props.setCanvas(canvas);
+            }.bind(this) });
         } else {
-          if (this.props.info.value === ind) {
-            //	imgUrl = require("./../images/"+name+"-selected-01.png");
-            imgUrl = "./images/" + name + "-selected-01.png";
+          /*using icon from font awesome rather than custom image*/
+          if (name.includes("fa")) {
+            className += " fa " + name;
+            return _react2.default.createElement("div", { className: className, onClick: this.update.bind(null, ind, this) });
           } else {
-            //	imgUrl = require("./../images/"+name+"-01.png");
-            imgUrl = "./images/" + name + "-01.png";
-          }
+            if (this.props.info.value === ind) {
+              //	imgUrl = require("./../images/"+name+"-selected-01.png");
+              imgUrl = "./images/" + name + "-selected-01.png";
+            } else {
+              //	imgUrl = require("./../images/"+name+"-01.png");
+              imgUrl = "./images/" + name + "-01.png";
+            }
 
-          return _react2.default.createElement("img", { className: className, src: imgUrl, key: name, alt: name, onClick: this.update.bind(null, ind, this) });
+            return _react2.default.createElement("img", { className: className, src: imgUrl, key: name, alt: name, onClick: this.update.bind(null, ind, this) });
+          }
         }
       }.bind(this));
+
+      /* uploaded images become shape options */
+      /*  if(this.props.info.name=="shape"){
+         this.props.images.map(function(image, index){
+            options.push(<canvas className="control-button" key={"ca"+index} ref={function(canvas) {
+                 console.log("DRAWING", canvas, image);
+                 if(canvas!=null) {
+                   canvas.width = 400;
+                   canvas.height = 300;
+                   var ctx = canvas.getContext('2d');
+                   ctx.drawImage(image,0,0, canvas.width, canvas.height);
+                 }
+              //  this.props.setCanvas(canvas);
+               }.bind(this)}></canvas>);
+         }.bind(this));
+        }*/
+
       var label = [];
       if (this.props.info.label) label = _react2.default.createElement(
         "h4",
@@ -1646,7 +1698,7 @@ module.exports=[
 			{
 				"type": "select", 
 				"name": "shape",
-				"options": ["line", "circle", "square", "fa-file-image-o"],
+				"options": ["line", "circle", "square"],
 				"value": 1
 			},
 			{
@@ -1666,7 +1718,7 @@ module.exports=[
 				"label": "tamaño",
 				"value": 89,
 				"min": 1,
-				"max": 300,
+				"max": 600,
 				"midiChannel": 0
 			},
 			{

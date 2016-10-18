@@ -5,24 +5,33 @@ class CustomImage extends Component {
   onDrop(files) {
     console.log(this);
     console.log('Received files: ', files);
-     var reader = new FileReader();
-    reader.onload = function(event){
-        var img = new Image();
-        img.onload = function(){
-            console.log(this);
-            this.canvas.width = 400;
-            this.canvas.height = 300;
-            this.ctx = this.canvas.getContext('2d');
-            this.ctx.drawImage(img,0,0, this.canvas.width, this.canvas.height);
-        }.bind(this);
-        img.src = event.target.result;
-    }.bind(this);
-    reader.readAsDataURL(files[0]);   
+    files.map(function(file){
+        var reader = new FileReader();
+      reader.onload = function(event){
+          var img = new Image();
+          img.onload = function(){
+             
+              this.props.setCanvas(img);
+          }.bind(this);
+          img.src = event.target.result;
+      }.bind(this);
+      reader.readAsDataURL(file);   
+    }.bind(this));
+    //  var reader = new FileReader();
+    // reader.onload = function(event){
+    //     var img = new Image();
+    //     img.onload = function(){
+           
+    //         this.props.setCanvas(img);
+    //     }.bind(this);
+    //     img.src = event.target.result;
+    // }.bind(this);
+    // reader.readAsDataURL(files[0]);   
   }
 
   render() {
-    var w = 40;
-    var h = 40;
+    var w = 60;
+    var h = 60;
     var style = {
       position: "relative",
        width: w,
@@ -35,7 +44,8 @@ class CustomImage extends Component {
       top: 0,
       left: 0,
       width: "100%",
-      height: "100%"
+      height: "100%",
+      color: "#fff"
     };
        var dropStyle = {
            width: w,
@@ -48,18 +58,16 @@ class CustomImage extends Component {
           height: h,
           backgroundColor: "#fff"
         };
-
+        var iconStyle = {
+          fontSize: "40px",
+          margin: "10px"
+        }
       return (
        
         <div style={style}>
-          <canvas style={canvasStyle} key="preview-canvas" ref={function(canvas) {
-              console.log(canvas);
-              console.log(this);
-              this.canvas = canvas;
-             this.props.setCanvas(canvas);
-            }.bind(this)}></canvas>
+         
           <div style={canvasStyle}><Dropzone style={dropStyle} activeStyle={activeStyle} onDrop={this.onDrop.bind(this)} disableClick={true}>
-                <div></div>
+                <i style={iconStyle} className="fa fa-file-image-o"></i>
               </Dropzone></div>
            
         </div>

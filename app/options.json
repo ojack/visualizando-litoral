@@ -5,7 +5,7 @@
 			{
 				"type": "select", 
 				"name": "shape",
-				"options": ["line", "circle", "square", "fa-file-image-o"],
+				"options": ["line", "circle", "square"],
 				"value": 1
 			},
 			{
@@ -25,7 +25,7 @@
 				"label": "tamaño",
 				"value": 89,
 				"min": 1,
-				"max": 300,
+				"max": 600,
 				"midiChannel": 0
 			},
 			{

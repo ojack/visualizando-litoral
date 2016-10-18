@@ -12,7 +12,7 @@ class App extends Component {
     super(props);
     
     
-    this.state = {options: options, showControls: true, keysDown: []};
+    this.state = {options: options, showControls: true, keysDown: [], images: []};
 
     var settings = {};
     for(var i = 0; i < this.state.options.length; i++){
@@ -53,6 +53,14 @@ class App extends Component {
     this.settings.canvas = canvas;
   }
 
+  addUploadedImage(image){
+    var images = this.state.images;
+    var newOptions = this.state.options;
+    newOptions[0].controls[0].options.push(image);
+    this.setState({options: newOptions});
+   // this.setState({images: images});
+  }
+
   render() {
     var style = {
       position: "absolute",
@@ -63,7 +71,7 @@ class App extends Component {
     };
     var controls, draw = [];
     if(this.state.showControls){
-      controls = <Controls update={this.update.bind(this)} midi={this.state.midi} keysDown={this.state.keysDown} options={this.state.options} setCanvas={this.setCanvas.bind(this)}/>
+      controls = <Controls update={this.update.bind(this)} midi={this.state.midi} keysDown={this.state.keysDown} options={this.state.options} setCanvas={this.addUploadedImage.bind(this)} images={this.state.images}/>
     }
     console.log("val", this.settings.shape.value);
    

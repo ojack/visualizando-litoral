@@ -5,7 +5,7 @@ class Agent {
     this.points = [];
     this.stepIndex = 0;
     this.ctx = ctx;
-    this.image = settings.canvas;
+   // this.image = settings.canvas;
     this.isRecording = false;
     this.size = settings.size.value;
     this.length = settings.length.value;
@@ -14,6 +14,9 @@ class Agent {
     var c = settings.color.value;
     this.color = "rgba("+c.r + "," + c.g + "," + c.b + "," + c.a + ")";
     this.shape = settings.shape.value;
+    if(this.shape > 2){
+      this.image = document.getElementById("c"+ this.shape)
+    }
     console.log("IMAGE", this.image);
     //console.log("REPEAT", this.repeat);
   }
@@ -119,7 +122,7 @@ class Agent {
             this.ctx.translate(currPt.x, currPt.y);
             this.ctx.fillRect(-currPt.size/2, -currPt.size/2,currPt.size, currPt.size);
             break;
-        case 3:
+        default:
             this.ctx.translate(currPt.x, currPt.y);
             this.ctx.drawImage(this.image, -currPt.size/2, -currPt.size/2,currPt.size, currPt.size);
       } 

@@ -10,7 +10,7 @@ class ControlGroup extends Component {
   	 var controls = this.props.info.controls.map(function(obj, ind){
   	 	if(obj.type=="select"){
         // console.log("rendering select");
-  	 		return <SelectControl {...this.props} controlIndex={ind} info={obj} />
+  	 		return <SelectControl {...this.props} controlIndex={ind} info={obj} images={this.props.images}/>
   	 	} else if(obj.type=="slider"){
   	 		return <SliderControl {...this.props} controlIndex={ind} info={obj} midi={this.props.midi}/>
   	 	} else if(obj.type=="color"){
